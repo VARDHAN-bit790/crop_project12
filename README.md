@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# crop_project12
-=======
 # -FarmTech
 # Crop Disease Prediction Web App
 
@@ -51,4 +48,3 @@ git clone <repository-url>
 cd <repository-folder>
 pip install -r requirements.txt
 
->>>>>>> 5a135aeb (Add extracted project files for deployment)
