@@ -1,7 +1,0 @@
-        result = f"{predicted_class} ({confidence:.2f}% confidence)"
-        return render_template('disease_prediction.html', prediction=result)
-    except Exception as e:
-        return render_template('disease_prediction.html', prediction=f"Error during prediction: {str(e)}")
-
-if __name__ == '__main__':
-    app.run(debug=True)
