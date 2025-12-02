@@ -7,7 +7,7 @@ keras==2.15.0
 numpy==1.26.4
 opencv-python==4.7.0.68
 
-pillow==11.2.0
+pillow==10.2.0
 scikit-learn==1.6.1
 pandas==2.2.3
 requests==2.32.3
