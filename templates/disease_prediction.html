@@ -10,18 +10,14 @@
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">FarmTech</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="{{ url_for('home') }}">FarmTech</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <div class="d-flex gap-4">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link active" href="/disease-prediction">Disease Prediction</a>
-                    <a class="nav-link" href="#">Market Price</a>
-                    <a class="nav-link" href="#">Government Schemes</a>
-                    <a class="nav-link" href="#">Testimonials</a>
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    <a class="nav-link active" href="{{ url_for('prediction_page') }}">Disease Prediction</a>
                 </div>
             </div>
         </div>
@@ -30,7 +26,9 @@
     <div class="container mt-5 text-center">
         <h2>Upload an Image to Detect Crop Disease</h2>
         <form action="/predict" method="POST" enctype="multipart/form-data" class="mt-4">
-            <input type="file" name="image" accept="image/*" class="form-control mb-3" required placeholder="Predict">
+            <label for="crop-image" class="form-label">Choose a crop leaf photo</label>
+            <input id="crop-image" type="file" name="image" accept="image/*" class="form-control mb-2" aria-describedby="image-help" required>
+            <div id="image-help" class="form-text mb-3">Use a clear image file up to 16 MB.</div>
             <button type="submit" class="btn btn-success btn-lg">Predict</button>
         </form>
 
@@ -44,7 +42,7 @@
 
 
         {% if prediction %}
-            <div class="alert alert-info mt-4">
+            <div class="alert alert-info mt-4" role="status">
                 <h4>Prediction Result:</h4>
                 <p>{{ prediction }}</p>
             </div>

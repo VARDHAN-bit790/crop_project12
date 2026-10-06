@@ -64,11 +64,11 @@ def prediction_page():
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
-        return render_template('disease_prediction.html', prediction="No file selected")
+        return render_template('disease_prediction.html', prediction="Choose a crop leaf image before predicting.")
 
     file = request.files['image']
     if file.filename == '':
-        return render_template('disease_prediction.html', prediction="No file selected")
+        return render_template('disease_prediction.html', prediction="Choose a crop leaf image before predicting.")
 
     filename = secure_filename(file.filename)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -91,9 +91,9 @@ def predict():
 
         # ✅ Handle low-confidence images
         if confidence < THRESHOLD:
-            # Move file to unknown folder
+            # Keep the preview available while archiving low-confidence uploads.
             unknown_path = os.path.join(UNKNOWN_FOLDER, filename)
-            shutil.move(filepath, unknown_path)
+            shutil.copy2(filepath, unknown_path)
             # Show closest known class too
             predicted_class = class_names[predicted_index]
             result = f"Closest match: {predicted_class} (confidence: {confidence*100:.2f}%)"
@@ -107,13 +107,21 @@ def predict():
             uploaded_image=uploaded_image
         )
 
-    except Exception as e:
-        # ✅ Catch any runtime errors safely
+    except Exception:
+        app.logger.exception("Image prediction failed")
         return render_template(
             'disease_prediction.html',
-            prediction=f"Error during prediction: {str(e)}",
+            prediction="We couldn't process that image. Try a clear crop leaf photo in a common image format.",
             uploaded_image=uploaded_image
         )
+
+
+@app.errorhandler(413)
+def file_too_large(_error):
+    return render_template(
+        'disease_prediction.html',
+        prediction="That image is larger than 16 MB. Choose a smaller image and try again."
+    ), 413
 
 
 # python web server
